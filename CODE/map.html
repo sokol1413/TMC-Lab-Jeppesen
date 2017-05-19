@@ -8,12 +8,12 @@
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <!-- <LINK href="style.css" rel="stylesheet" type="text/css"> -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript">
         //<![CDATA[
         var map;
         var mercator = new OpenLayers.Projection("EPSG:900913");
         var geographic = new OpenLayers.Projection("EPSG:4326");
-
         var line_style = {
             strokeColor: "#0000EE",
             strokeOpacity: 0.7,
@@ -21,7 +21,6 @@
             pointRadius: 6,
             pointerEvents: "visiblePainted"
         };
-
         function init() {
             var options = {
                 projection: mercator,
@@ -32,40 +31,83 @@
                 numZoomLevels: 1
             };
             map = new OpenLayers.Map('map', options);
-
             var osm = new OpenLayers.Layer.OSM();
-
             var gmap = new OpenLayers.Layer.Google("Google", {
                 sphericalMercator: true
             });
-
             markers = new OpenLayers.Layer.Markers("points");
-
             map.addLayers([osm, gmap]);
-
             var polyline = new OpenLayers.Layer.Vector("Routes");
             map.addLayer(polyline);
-
             map.addLayer(markers);
-
             directionsService = new google.maps.DirectionsService();
-
             map.addControl(new OpenLayers.Control.LayerSwitcher());
             map.addControl(new OpenLayers.Control.MousePosition());
-
             map.setCenter(new OpenLayers.LonLat(18.4718, 54.37889).transform(geographic, mercator), 16);
-
-
             var click = new OpenLayers.Control.Click();
             map.addControl(click);
             click.activate();
-
             var events = map.events;
             events.register("mousedown", map, function(e) {
                 //do smth
                 return true;
             }, true);
         };
+		function getGates()	// get list of available gates
+			// return list of gates {id: idval, lon: lonval, lat: latval}
+		{
+			// wysyłamy String Gate
+			$.ajax({
+                    type: "GET",
+                    dataType:"json",
+                    contentType: "application/json; charset=utf-8",
+                    url: "http://localhost:80/gate",
+                    success: function(data1) {	// pobranie gatów
+                        console.log(data1);
+						myReceive(data1);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(' Error in processing!');
+
+                    }
+                });
+				
+		}
+		
+		function sendChoosenGate(GateId) //send id of choosen gate
+		{
+			// wysyłamy Id
+			$.ajax({
+				type: 'PUT',
+				url: "localhost:80/gate",
+				data: "id=".concat(id),
+				success: function (data) {
+					alert(id);
+				}
+			});
+			
+		}
+		
+		function getUpdate()
+		{
+			// dostajemy info ze zaszła zmiana
+			$.ajax({
+                    type: "GET",
+                    dataType:"json",
+                    contentType: "application/json; charset=utf-8",
+                    url: "http://localhost:80/cgate",
+                    success: function(chosenGate) {	// pobranie gatów
+                        console.log(chosenGate);
+						//obróbka dnayuch , tablica gatow
+						
+						//... wywołanie funkcji ktora wyswietli wybrany gate
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(' Error in processing!');
+
+                    }
+                });
+		}
     </script>
 </head>
 
