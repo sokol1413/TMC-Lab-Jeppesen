@@ -75,15 +75,13 @@
 				
 		}
 		
-		function sendChoosenGate(GateId) //send id of choosen gate
+		function sendChoosenGate(id) //send id of choosen gate
 		{
-			// wysyłamy Id
 			$.ajax({
 				type: 'PUT',
-				url: "localhost:80/gate",
-				data: "id=".concat(id),
+				url: 'http://localhost:80/gate/'+id,
 				success: function (data) {
-					alert(id);
+					alert(data);
 				}
 			});
 			
