@@ -1,6 +1,8 @@
 var map;
 var mercator = new OpenLayers.Projection("EPSG:900913");
 var geographic = new OpenLayers.Projection("EPSG:4326");
+//var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/infosource/");
+var webSocket;
 
 function onStart() {
 	var options = {
@@ -28,6 +30,13 @@ function onStart() {
 	var events = map.events;
 
 };
+
+function registerGateUpdates() {
+	//Establish the WebSocket connection and set up event handlers	
+	webSocket = new WebSocket("ws://localhost:80/infosource");
+	webSocket.onmessage = function (msg) { 
+		if(msg.data == 'new gate') getUpdate() };
+}
 
 function getGates() // get list of available gates
 // return list of gates {id: idval, lon: lonval, lat: latval}
@@ -89,15 +98,25 @@ function addMarker(lonlat, gateId, isFinal) {
 		marker.events.register("mousedown", feature, markerClick);
 	} else {
 		marker.setUrl('FinalMarker.png');
-		marker.events.register('mouseover', marker, function() {
-			var msg = "Your destination gate: " + gateId;
-			var popup = new OpenLayers.Popup.FramedCloud("Popup",
-				lonlat, null, '<div>' + msg + '</div>', null, false);
-			map.addPopup(popup);
-		});
+		feature.data.popupContentHTML = '<input type="button" value="Reset Gates" onclick="resetGates()">';
+		var markerClick = function(evt) {
+			refreshMarkerLabels();
+			if (!this.popup) {
+				this.popup = this.createPopup(this.closeBox);
+				map.addPopup(this.popup);
+				this.popup.show();
+			}
+			currentPopup = this.popup;
+			OpenLayers.Event.stop(evt);
+		};
+		marker.events.register("mousedown", feature, markerClick);
 	}
 }
 
+function resetGates() {
+	refreshMarkerLabels();
+	getGates();	
+}
 
 
 function addChosenGateMarker(gate) {
@@ -114,8 +133,7 @@ function sendChoosenGate(id) //send id of choosen gate
 		dataType: "text",
 		success: function(data) {
 			//if we successfuly sent the gate id to server, then we want to the send this gate from server to officer, that's why we call "getUpdate()" here
-			refreshMarkerLabels();
-			getUpdate();
+			refreshMarkerLabels();			
 			console.log(data);
 		}
 	});
