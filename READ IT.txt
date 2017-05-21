@@ -1,0 +1,6 @@
+¯eby uruchomiæ to, co jest teraz zrobione, nale¿y uruchomic server:
+- zaimportowac projekt "Server" np. w NetBeansie i odpalic go.
+
+Nastêpnie odpalic obok siebie dwa pliki - Captain.html oraz FirstOfficer.html. Z poziomu kapitana wybrac bramke,
+przejsc do oficera i odswiezyc (F5) w przegladarce. Powinnismy zobaczyc wybrana bramke. Wybor bramki mozemy ponowic poprzez
+odswiezenie w oknie kapitana.
