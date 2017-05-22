@@ -19,6 +19,13 @@
 </head>
 
 <body>
-    <div id="map"></div>
+	<div id="root" style="width: 100%;">
+		<div id="map" style="float:left; width: 75%"></div>
+		<div id="buttons" style="float:right;">
+			<select id="gatesSelect" onchange="showMarker()"></select>
+			<button type="button" onclick="sendDest()">Send</button>  
+		</div>
+	</div>
+	<div style="clear:both"></div>
 </body>
 </html>

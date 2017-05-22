@@ -1,4 +1,5 @@
 var map;
+var gGates;
 var mercator = new OpenLayers.Projection("EPSG:900913");
 var geographic = new OpenLayers.Projection("EPSG:4326");
 
@@ -39,7 +40,8 @@ function getGates() // get list of available gates
 		success: function(data) {
 			console.log(data);
 			//here we add markers on map
-			addMarkers(data);
+			receiveGates(data)
+			//addMarkers(data);
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(' Error in processing!');
@@ -98,7 +100,32 @@ function addMarker(lonlat, gateId, isFinal) {
 	}
 }
 
+function sendDest(){
+	var select = document.getElementById("gatesSelect");
+	sendChoosenGate(select.options[select.selectedIndex].text);
+}
 
+function receiveGates(gates) {
+	//var data = '{"gates":[{"id":"1", "lon":"18.47014", "lat":"54.38018"},{"id":"3", "lon":"18.46211", "lat":"54.38223"}]}';
+	gGates = gates;
+	var select = document.getElementById("gatesSelect");
+	var index;
+	for(index =0;index<gGates.length;index++){
+		var option = document.createElement("option");
+		option.text = gGates[index].id;
+		option.value = index;
+		select.add(option);
+	}
+}	
+
+function showMarker() {
+	var select = document.getElementById("gatesSelect");
+	var value = select.options[select.selectedIndex].value;
+	
+	markers.clearMarkers();
+	refreshMarkerLabels();
+	addMarker(new OpenLayers.LonLat(gGates[value].lon, gGates[value].lat).transform(geographic, mercator), gGates[value].id, false);
+}
 
 function addChosenGateMarker(gate) {
 	markers.clearMarkers();
