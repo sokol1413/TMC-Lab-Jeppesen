@@ -5,14 +5,9 @@ import java.util.logging.Logger;
 import org.json.JSONException;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
-import org.skyscreamer.jsonassert.ArrayValueMatcher;
-import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.ArraySizeComparator;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
-import org.skyscreamer.jsonassert.comparator.DefaultComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 public class GatesTests {
     private Gates gates;
