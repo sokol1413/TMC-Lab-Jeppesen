@@ -60,7 +60,7 @@ public class ServiceTest
     
     @Before
     public void setUp() {
-        System.out.println("handleGetGates(Request req, Response res) test");  
+        System.out.println("Launching service test");  
         createGates();
     }
     
