@@ -18,12 +18,14 @@
     </script>
 </head>
 
-<body>
+<body style="background: black;">
 	<div id="root" style="width: 100%;">
 		<div id="map" style="float:left; width: 75%"></div>
-		<div id="buttons" style="float:right;">
-			<select id="gatesSelect" onchange="showMarker()"></select>
-			<button type="button" onclick="sendDest()">Send</button>  
+		<div id="buttons" style="float:right; width: 25%; height: 100%; background: CadetBlue;">
+            <div style="width: 70%; height: 3%; margin: 0px auto; text-align: center; position: relative; top:25%;">
+    			<select id="gatesSelect" onchange="showMarker()"></select>
+    			<button type="button" onclick="sendDest()">Send</button>  
+            </div>
 		</div>
 	</div>
 	<div style="clear:both"></div>
