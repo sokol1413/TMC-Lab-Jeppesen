@@ -13,16 +13,27 @@ public class Service {
      ArrayList<Gate> gatesList = new ArrayList<Gate>();
      GatesList gates = new GatesList(gatesList);
     
+     public Service() {
+         createSomeGates();  
+     }
+     
+     public Service(GatesList gateList) {
+         gates = gateList;
+     }
+     
     public void run()
-    {
-        createSomeGates();     
+    {           
         port(80);      
         get("/gates", (req, res) -> handleGetGates(req,res));       
         get("/cgate", (req, res) -> handleGetCGate(req,res));      
         post("/gates", (req, res) -> handlePostGates(req,res));
     }
     
-    public  void createSomeGates()
+    public void stop() {
+        spark.Spark.stop();
+    }
+    
+    private void createSomeGates()
     {
         gatesList.add(new Gate(1,18.47429, 54.37914));
         gatesList.add(new Gate(2,18.47364, 54.37934));
@@ -40,7 +51,7 @@ public class Service {
         gatesList.add(new Gate(22,18.46543, 54.38112));
         gatesList.add(new Gate(23,18.46490, 54.38126));    
     }
-    public  String handlePostGates(Request req, Response res)
+    public String handlePostGates(Request req, Response res)
     {
         res.type("text");
         res.header("Access-Control-Allow-Origin", "*");
@@ -50,13 +61,13 @@ public class Service {
         return "Gate selected properly";
     }
     
-    public  String handleGetGates(Request req, Response res)
+    public String handleGetGates(Request req, Response res)
     {
         res.type("application/json");
         res.header("Access-Control-Allow-Origin", "*");
         return gates.getGates();
     }
-    public  String handleGetCGate(Request req, Response res)
+    public String handleGetCGate(Request req, Response res)
     {
         res.type("application/json");
         res.header("Access-Control-Allow-Origin", "*");

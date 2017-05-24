@@ -11,8 +11,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.After;
@@ -22,11 +25,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import service.Gate;
+import service.GatesList;
 import service.Service;
 
 public class ServiceTest 
 {
-    private ArrayList<Gate> gates = new ArrayList<Gate>();
+    private static ArrayList<Gate> gates = new ArrayList<Gate>();
+    private static GatesList gatesList = new GatesList(gates);
+    private static Service s;
     
     public void createGates()
     {
@@ -52,10 +58,13 @@ public class ServiceTest
     
     @BeforeClass
     public static void setUpClass() {
+        s = new Service(gatesList);
+        s.run(); 
     }
     
     @AfterClass
     public static void tearDownClass() {
+        s.stop();
     }
     
     @Before
@@ -72,11 +81,8 @@ public class ServiceTest
     @Test
     public void TestGetGatesMethod() throws IOException 
     {      
-        Service s = new Service();
         Gson g = new Gson();
-        s.run(); 
         String ex = g.toJson(gates);
-        
         CloseableHttpClient httpClient = HttpClients.custom().build();
 
         HttpGet httpGet = new HttpGet("http://localhost:80/gates");
@@ -84,7 +90,7 @@ public class ServiceTest
 
         int statusCode = response.getStatusLine().getStatusCode();
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
+        
         StringBuilder result = new StringBuilder();
         String line = "";
         while ((line = rd.readLine()) != null)
@@ -94,6 +100,61 @@ public class ServiceTest
         System.out.println(result.toString());
         assertEquals(200, statusCode);
         assertEquals(ex, result.toString());
+    }
+    
+    //test handleGetCGate(Request req, Response res) method from Service class
+    @Test
+    public void TestGetCGateMethod() throws IOException 
+    {              
+        Gson g = new Gson();               
+        //get json of gate from gates[0];
+        String ex = g.toJson(gates.get(0));        
+        //set selected gate to id of gate[0]
+        gatesList.selected_id = gates.get(0).id;
+        
+        CloseableHttpClient httpClient = HttpClients.custom().build();
+        HttpGet httpGet = new HttpGet("http://localhost:80/cgate");
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        
+        StringBuilder result = new StringBuilder();
+        String line = "";
+        while ((line = rd.readLine()) != null)
+        {
+            result.append(line);
+        }
+        System.out.println(result.toString());
+        assertEquals(200, statusCode);
+        assertEquals(ex, result.toString());
+    }
+    
+    //test handlePostGates(Request req, Response res) method from Service class
+    @Test
+    public void TestPostGateMethod() throws IOException 
+    {              
+        int ex = gates.get(0).id;
+        gatesList.selected_id = -1;
+        
+        CloseableHttpClient httpClient = HttpClients.custom().build();
+        HttpPost httpPost = new HttpPost("http://localhost:80/gates");
+        HttpEntity he = new StringEntity(String.valueOf(ex));
+        httpPost.setEntity(he);
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        
+        StringBuilder result = new StringBuilder();
+        String line = "";
+        while ((line = rd.readLine()) != null)
+        {
+            result.append(line);
+        }
+        System.out.println(result.toString());
+        assertEquals(200, statusCode);
+        assertEquals(ex, gatesList.selected_id);
     }
 }
     
