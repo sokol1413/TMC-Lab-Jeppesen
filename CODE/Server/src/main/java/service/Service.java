@@ -23,7 +23,10 @@ public class Service {
      
     public void run()
     {           
-        port(80);      
+        staticFiles.location("/public");
+        webSocket("/infosource", WsHandler.class);
+        port(80);             
+        redirect.get("/", "/Captain.html");        
         get("/gates", (req, res) -> handleGetGates(req,res));       
         get("/cgate", (req, res) -> handleGetCGate(req,res));      
         post("/gates", (req, res) -> handlePostGates(req,res));
@@ -58,6 +61,7 @@ public class Service {
         int selectedGateId = Integer.parseInt(req.body());
         gates.selected_id = selectedGateId;
         System.out.println("Captain has chosen gate " + gates.getGate(gates.selected_id) + "!");
+        WsHandler.broadcastMessage("new gate");
         return "Gate selected properly";
     }
     
