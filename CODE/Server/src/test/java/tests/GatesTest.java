@@ -13,10 +13,21 @@ import org.skyscreamer.jsonassert.comparator.ArraySizeComparator;
 import service.Gate;
 import service.GatesList;
 
-public class GatesTests {
+public class GatesTest {
     private ArrayList<Gate> gates;
     private GatesList gl;
     private Gson gson; 
+    
+    public GatesTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {        
+    }
     
     @Before
     public void setUp() throws Exception {
@@ -46,7 +57,7 @@ public class GatesTests {
             System.out.println(res);
             JSONAssert.assertEquals(ex, gl.getGate(10), true);
         } catch (JSONException e) {
-            Logger.getLogger(GatesTests.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GatesTest.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -58,7 +69,7 @@ public class GatesTests {
             String ex = "[1,30]";
             JSONAssert.assertEquals(ex, data, new ArraySizeComparator(JSONCompareMode.LENIENT));
         } catch (JSONException e) {
-            Logger.getLogger(GatesTests.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(GatesTest.class.getName()).log(Level.SEVERE, null, e);
         }
     }       
     //tests gson parsing with getGates method
