@@ -26,7 +26,7 @@ public class Service {
         staticFiles.location("/public");
         webSocket("/infosource", WsHandler.class);
         port(80);             
-        redirect.get("/", "/Captain.html");        
+        redirect.get("/", "/efb.html");        
         get("/gates", (req, res) -> handleGetGates(req,res));       
         get("/cgate", (req, res) -> handleGetCGate(req,res));      
         post("/gates", (req, res) -> handlePostGates(req,res));
