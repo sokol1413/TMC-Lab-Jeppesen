@@ -1,0 +1,14 @@
+1. Wyœwietlenie mapy lotniska.
+2. Wyœwietlenie wszystkich dostêpnych bramek tak, ¿eby kapitan móg³ któr¹œ wybraæ.
+   Np w formie comboboxa.
+3. Kapitan musi mieæ mo¿liwosæ wybrania bramki, do której chce ko³owaæ samolot.
+        -Dane musz¹ zostaæ wys³ane na serwer.
+4. Officer musi mieæ mo¿liwoœæ podgl¹du bramki, która zosta³a wybrana przez Kapitana.
+        -Dane musz¹ zostaæ pobrane z serwera.
+
+1. Map of the airport diplay.
+2. Display of all gates.
+3. Kapitan must know which gates are free.
+        -Data must be sent to te server.
+4. Officer must know which gates kapitan chose.
+        -data must be download from server.
