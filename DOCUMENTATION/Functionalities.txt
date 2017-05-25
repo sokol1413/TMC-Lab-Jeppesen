@@ -1,14 +1,13 @@
-1. Wyœwietlenie mapy lotniska.
-2. Wyœwietlenie wszystkich dostêpnych bramek tak, ¿eby kapitan móg³ któr¹œ wybraæ.
-   Np w formie comboboxa.
-3. Kapitan musi mieæ mo¿liwosæ wybrania bramki, do której chce ko³owaæ samolot.
-        -Dane musz¹ zostaæ wys³ane na serwer.
-4. Officer musi mieæ mo¿liwoœæ podgl¹du bramki, która zosta³a wybrana przez Kapitana.
-        -Dane musz¹ zostaæ pobrane z serwera.
+1. Wyœwietlenie mapy lotniska w Gdañsku.
+2. Wyœwietlenie w formie czerwonych znaczników na mapie wszystkich dostêpnych bramek na lotnisku.
+3. Kapitan ma mo¿liwosæ wybrania bramki, do której chce ko³owaæ samolot. Wybrana bramka jest oznaczona poprzez zielony znacznik.
+        - Dane zostaj¹ wys³ane serwer.
+4. Informacja o wybranej przez kapitana bramce jest synchronizowana z Oficerem. Informacja ta jest aktualizowana u Oficera poprzez wyœwietlenie zielonego znacznika na mapie.
+        - Dane zostaj¹ pobrane z serwera.
 
-1. Map of the airport diplay.
-2. Display of all gates.
-3. Kapitan must know which gates are free.
-        -Data must be sent to te server.
-4. Officer must know which gates kapitan chose.
-        -data must be download from server.
+1. Displaying map of Gdañsk's airport
+2. Displaying all available gates on the map using red markers.
+3. Captain has a possibility of choosing gate in order to set the taxiway. Chosen gate is marked on the map via green marker.
+		- Data is sent to the server
+4. Information about chosen gate is synchronised with First Officer. It's updated and displayed on the map via green marker.
+        - Data is taken from the server
